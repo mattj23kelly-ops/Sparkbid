@@ -26,10 +26,26 @@ return () => clearInterval(interval);
 const toggleItem = (list, setList, item) => {
 setList(list.includes(item) ? list.filter(i => i !== item) : [...list, item]);
   };
-const handleSubmit = () => {
-// In production, send to Formspree/Supabase/etc:
-// fetch("https://formspree.io/f/YOUR_ID", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ email, companyName, role, pains, tools, switchReasons }) });
+const handleSubmit = async () => {
+if (email && role) {
+try {
+await fetch("https://formspree.io/f/mdawreyl", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({
+email,
+companyName,
+role: role === "gc" ? "General Contractor" : "Electrical Contractor",
+painPoints: pains.join(", "),
+currentTools: tools.join(", "),
+mustHaveFeatures: switchReasons.join(", "),
+}),
+});
+} catch (err) {
+console.log("Submission error:", err);
+}
 setStep(5);
+}
   };
 const canAdvance = () => {
 if (step === 0) return !!role;
