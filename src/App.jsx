@@ -17,8 +17,13 @@ useEffect(() => {
 const interval = setInterval(() => setActiveFeature((p) => (p + 1) % 3), 4000);
 return () => clearInterval(interval);
   }, []);
-const handleSubmit = () => {
+const handleSubmit = async () => {
 if (email && role) {
+await fetch("https://formspree.io/f/mdawreyl", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({ email, role }),
+    });
 setSubmitted(true);
     }
   };
